@@ -172,20 +172,25 @@ def update_user(id_to_update):
     # Resposta da requisição
     return jsonify({'success': success, "msg": msg}), (200 if success else 400)
 
+
 # Exclui usuário
-# @auth_bp.route('/delete/<id_to_delete>', methods=['DELETE'])
-# @jwt_required()
-# @cross_origin()
-# def delete_user(id_to_delete):
-#     # Busca identificador do usuário no token JWT
-#     user_id = get_jwt_identity()
+@auth_bp.route('/delete/<id_to_delete>', methods=['DELETE'])
+@jwt_required()
+@cross_origin()
+def delete_user(id_to_delete):
+    # Busca identificador do usuário no token JWT
+    user_id = get_jwt_identity()
 
-#     # Usuário não está logado
-#     if not user_id:
-#         return jsonify(msg="Operação não autorizada."), 401
+    # Usuário não está logado
+    if not user_id:
+        return jsonify(msg="Operação não autorizada."), 401
     
-#     # Exclui usuário do banco de dados
-#     success, msg = database.auth.delete(id_to_delete)
+    success = False
+    # Exclui usuário do banco de dados
+    if id_to_delete:
+        success, msg = database.auth.delete(id_to_delete)
+    else:
+        msg = "Usuario ID não fornecido."
 
-#     # Resposta da requisição
-#     return jsonify({"success": success, "msg": msg}), (200 if success else 400)
+    # Resposta da requisição
+    return jsonify({"success": success, "msg": msg}), (200 if success else 400)
