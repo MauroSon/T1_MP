@@ -1,15 +1,11 @@
-import React from "react";
-import { Footer } from "./_components/Footer_/footer";
+import Image from "next/image";
+import Footer from "./components/Footer";
 
 export default function Home() {
-  
-
   return (
-    <main className=" bg-white">
-      <h1>
-        leo
-      </h1>
-      <Footer />
-    </main>
+    <div>
+      teste
+      <Footer></Footer>
+    </div>
   );
 }
