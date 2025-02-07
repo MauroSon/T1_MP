@@ -1,6 +1,6 @@
 import React from 'react';
-import {Footer} from '@/app/_components/Footer_/footer'
-import { BannerCarousel } from "@/app/_components/banners/page"
+import {Footer} from '@/app/components/Footer'
+import { BannerCarousel } from "@/app/components/Banner"
 
 export default function Prod() {
     const mockBannerImages = [

@@ -1,11 +1,18 @@
 import React from 'react';
-import {Footer} from '@/app/_components/Footer_/footer'
+import {Footer} from '@/app/components/Footer'
 import { Heart } from 'lucide-react';
+import { useState, useEffect } from 'react';
+//
+import { FiltroPesquisa } from '../components/FiltroPesquisa';
 
 export default function infoProd() {
   return (
     <main>
+      {/* testando filtro de FiltroPesquisa */}
+      <FiltroPesquisa/>
     <div className="max-w-2xl mx-auto p-4 space-y-6">
+      
+
       {/* cartela do produto*/}
       <div className="border border-black p-4">
         <div className="flex justify-between items-start">
