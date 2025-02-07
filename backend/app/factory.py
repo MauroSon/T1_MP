@@ -2,6 +2,7 @@ from flask import Flask, g
 from database.conn_database import Database
 from flask_cors import CORS
 from auth.auth import jwt
+import pymysql
 
 database = Database()
 
@@ -39,10 +40,15 @@ def create_app():
     def teardown_request(err):
         if err:
             print(f"ERROR: {err}")
-
         db = getattr(g, 'db', None)
         if db is not None:
-            db.close()
+            try:
+                db.close()
+            except pymysql.err.Error as e:
+                # Se for "Already closed", apenas ignore
+                if str(e) != "Already closed":
+                    raise
+
 
     # Importa rotas a serem utilizadas para as requisições
     from auth.routes import auth_bp

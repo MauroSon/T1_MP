@@ -1,6 +1,6 @@
 # Importa bibliotecas necessárias
 from flask import Blueprint, request, jsonify
-from factory import database
+from app.factory import database
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask_cors import cross_origin
 from .auth import block_token
