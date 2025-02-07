@@ -13,10 +13,10 @@ auth_bp = Blueprint('auth', __name__)
 @cross_origin()
 def signup():
     # Recebe dados do formulário enviado
-    data = request.form
+    data = request.json
 
     # Verifica se foi enviado uma imagem de perfil e se sim, lê a imagem
-    profile_img = request.files.get('profile_img')    
+    profile_img = request.files.get('foto_perfil')    
     profile_img_data = None
     if profile_img:
         profile_img_data = profile_img.read() 
@@ -26,16 +26,20 @@ def signup():
 
         # Retira os espaços em branco no início e no final dos valores
         for key, value in data.items():
-            data[key] = value.strip()
-
+            try:
+                data[key] = value.strip()
+            
+            # Tratamento de erros para valores booleanos
+            except AttributeError:
+                continue
         # Insere dados cadastrados no banco de dados
         success, msg = database.auth.create(
-            data['name'],
-            data['last_name'],
             data['email'],
             data['password'],
-            data['role'],
-            data['gender'],
+            data['nome'],
+            data['administrador'],
+            data['feirante'],
+            data['identificador'],
             profile_img_data  
         )    
 
