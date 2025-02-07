@@ -46,8 +46,10 @@ def create_app():
 
     # Importa rotas a serem utilizadas para as requisições
     from auth.routes import auth_bp
+    from loja.routes import loja_bp
 
     # Configura as rotas na aplicação
     app.register_blueprint(auth_bp, url_prefix=f'/{auth_bp.name}')
+    app.register_blueprint(loja_bp, url_prefix=f'/{loja_bp.name}')
 
     return app
