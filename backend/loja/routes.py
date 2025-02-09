@@ -13,14 +13,17 @@ loja_bp = Blueprint('loja', __name__)
 @cross_origin()
 def criar_loja():
     # Recebe dados do formulário enviado
-    data = request.form
+    data = request.json
 
     try:
         data = dict(data)
 
         # Retira os espaços em branco no início e no final dos valores
         for key, value in data.items():
-            data[key] = value.strip()
+            try:
+                data[key] = value.strip()
+            except AttributeError:
+                continue
 
         # Insere dados cadastrados no banco de dados
         success, msg = database.loja.create(

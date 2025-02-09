@@ -12,7 +12,7 @@ class AuthHelper(BaseHelper):
                 identificador: str, foto_perfil: bytes = None) -> tuple[bool, str]:
         try:
             # Verifica se a conta já está cadastrada com o email fornecido
-            usuario_existe = self.usuario_existe(email=email)
+            usuario_existe = self.usuario_existe(email=email, identificador=identificador)
             if usuario_existe:
                 msg = "Email já registrado."
                 return False, msg
@@ -55,12 +55,9 @@ class AuthHelper(BaseHelper):
 
             try:
                 self.cursor.execute(select_user_query, (usuario_id,))
-                user_data = list(self.cursor.fetchone())
+                user_data = self.cursor.fetchone()
                 
-                if user_data[-1]:
-                    user_data[-1] = base64.b64encode(user_data[-1]).decode('utf-8')
-
-                return user_data 
+                return list(user_data) if user_data else None 
             
             except Exception as err:
                 return None, str(err)
@@ -189,7 +186,7 @@ class AuthHelper(BaseHelper):
                         expires = timedelta(minutes=30)
 
                         # Token JWT de autenticação
-                        access_token = create_access_token(identity = usuario_id, additional_claims = add_claims, expires_delta=expires)
+                        access_token = create_access_token(identity = str(usuario_id), additional_claims = add_claims, expires_delta=expires)
                         return True, access_token
 
                     except Exception as err:
@@ -206,12 +203,12 @@ class AuthHelper(BaseHelper):
             msg = "Campos incompletos."
             return False, msg
 
-    def usuario_existe(self, email: str = None) -> bool:
+    def usuario_existe(self, email: str = None, identificador: str = None) -> bool:
         select_user_query = """
-                            SELECT * FROM Usuario WHERE Email = %s
+                            SELECT * FROM Usuario WHERE Email = %s OR Identificador = %s
                             """
         if email:
-            self.cursor.execute(select_user_query, (email, ))
+            self.cursor.execute(select_user_query, (email, identificador, ))
             usuario_existe = self.cursor.fetchone()
             if usuario_existe:
                 return True

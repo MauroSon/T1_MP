@@ -6,20 +6,30 @@ from auth.helper import AuthHelper
 class LojaHelper(BaseHelper):
     # Método que irá inserir um novo cadastro no banco de dados na tabela "Lojas"
     def create(self, feirante_id: int, localizacao: str, nome: str, categoria: str, descricao: str) -> tuple[bool, str]:
+        loja_existe = self.loja_existe(nome_loja=nome)
+        if loja_existe:
+            msg = "Já existe uma loja com esse nome."
+            return False, msg
+        
         try:
             # Verifica se usuario existe no banco de dados
-            usuario_existe = AuthHelper.read(usuario_id=feirante_id)
-            if not(usuario_existe):
-                msg = "Loja inexistente."
+            usuario = AuthHelper.read(self, usuario_id=feirante_id)
+            try:
+                feirante = usuario[5]
+                if not(feirante):
+                    msg = "Feirante não encontrado."
+                    return False, msg
+            except TypeError:
+                msg = "Loja sem usuário associado."
                 return False, msg
             
             # Verifica a existência das informações obrigatórias
-            if nome  and localizacao and categoria:
+            if nome and localizacao and categoria:
                 # Comando SQL para inserir informações no banco de dados
                 insert_loja_query = """
                                     INSERT INTO 
                                         Loja (Feirante_id, Localizacao, Nome, Categoria, Descricao)
-                                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                                        VALUES (%s, %s, %s, %s, %s)
                                     """
 
                 try:
@@ -145,4 +155,17 @@ class LojaHelper(BaseHelper):
             msg = "Loja inexistente."
             return False, msg
 
-
+    # Método para verificar se loja com um mesmo nome já existe no banco de dados
+    def loja_existe(self, nome_loja: str) -> bool:
+        select_loja_query = """
+                            SELECT * FROM Loja WHERE Nome = %s
+                            """
+        try:
+            self.cursor.execute(select_loja_query, (nome_loja, ))
+            resultado = self.cursor.fetchall()
+            if resultado:
+                return True
+            return False
+        except Exception as err:
+            print(err)
+            return True # Retorna True para evitar cadastro incorreto

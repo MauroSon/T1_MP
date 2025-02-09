@@ -16,7 +16,6 @@ def test_signup_user(client):
 
     # Verifica se a requisição foi bem sucedida
     # Ou seja, se o usuario foi cadastrado
-    print(response.json)
     assert response.status_code == 201
     assert response.json["success"] == True
     assert response.json["msg"] == "Conta criada com sucesso!"
