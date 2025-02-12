@@ -3,6 +3,7 @@ import { Search, Heart, User, LogIn, MapPin } from 'lucide-react';
 import SearchBar from "./SearchBar"; // Componente client-side
 import FavoritesButton from "./FavoriteButton"; // Componente client-side
 import LoginButton from "./LoginButton"; // Componente client-side
+import { FiltroPesquisa } from "./FiltroPesquisa";
 
 export default function Navbar() {
   return (
@@ -14,7 +15,7 @@ export default function Navbar() {
         </div>
         
         {/* Search Bar */}
-        <SearchBar />
+        <FiltroPesquisa/>
         
         {/* Icons */}
         <div className="flex items-center space-x-4">

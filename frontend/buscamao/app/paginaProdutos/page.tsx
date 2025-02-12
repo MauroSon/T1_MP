@@ -1,5 +1,5 @@
 import React from 'react';
-import {Footer} from '@/app/components/Footer'
+import Footer from '@/app/components/Footer'
 import { BannerCarousel } from "@/app/components/Banner"
 
 export default function Prod() {
@@ -11,7 +11,7 @@ export default function Prod() {
       ]
 
   return (
-    <main>
+    <main className='h-screen'>
         <BannerCarousel images={mockBannerImages} />
 
     
