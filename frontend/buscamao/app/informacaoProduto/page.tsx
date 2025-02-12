@@ -1,5 +1,5 @@
 import React from 'react';
-import {Footer} from '@/app/components/Footer'
+import Footer from '@/app/components/Footer'
 import { Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 //

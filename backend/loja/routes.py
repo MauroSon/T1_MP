@@ -1,6 +1,6 @@
 # Importa bibliotecas necessárias
 from flask import Blueprint, request, jsonify
-from factory import database
+from app.factory import database
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask_cors import cross_origin
 
@@ -77,7 +77,7 @@ def loja_details(loja_id: int):
         return jsonify(msg="Operação não autorizada."), 401
     
     # Lê loja no banco de dados
-    loja_data = database.loja.read(user_id=loja_id)
+    loja_data = database.loja.read(loja_id=loja_id)
     
     # Resposta da requisição
     return jsonify(data=loja_data) if loja_data else ('', 404)
