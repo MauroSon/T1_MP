@@ -80,7 +80,7 @@ def loja_details(loja_id: int):
         return jsonify(msg="Operação não autorizada."), 401
     
     # Lê loja no banco de dados
-    loja_data = database.loja.read(user_id=loja_id)
+    loja_data = database.loja.read(loja_id=loja_id)
     
     # Resposta da requisição
     return jsonify(data=loja_data) if loja_data else ('', 404)

@@ -137,7 +137,7 @@ class LojaHelper(BaseHelper):
     # Método para excluir loja no banco de dados
     def delete(self, loja_id: int) -> tuple[bool, str]:
         # Comando SQL para excluir loja da tabela "Loja"
-        delete_loja_query = "DELETE FROM Usuario WHERE Loja_id = %s"
+        delete_loja_query = "DELETE FROM Loja WHERE Loja_id = %s"
 
         loja_existe = self.read(loja_id=loja_id)
         # Verifica se a loja existe no banco de dados

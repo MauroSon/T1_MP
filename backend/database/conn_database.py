@@ -2,6 +2,7 @@ import pymysql
 
 from auth.helper import AuthHelper
 from loja.helper import LojaHelper
+from produto.helper import ProdutoHelper
 
 def get_db_connection():
     connection = pymysql.connect(
@@ -19,7 +20,8 @@ class Database:
         self.cursor = self.connection.cursor()
         self.auth = AuthHelper(self.connection, self.cursor)
         self.loja = LojaHelper(self.connection, self.cursor)
-
+        self.produto = ProdutoHelper(self.connection, self.cursor)
+        
     def close(self):
         self.connection.close()
         self.cursor.close()
