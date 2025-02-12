@@ -1,8 +1,8 @@
-'use client';
-
-import Link from "next/link"
 import Image from "next/image";
 import { Search, Heart, User, LogIn, MapPin } from 'lucide-react';
+import SearchBar from "./SearchBar"; // Componente client-side
+import FavoritesButton from "./FavoriteButton"; // Componente client-side
+import LoginButton from "./LoginButton"; // Componente client-side
 
 export default function Navbar() {
   return (
@@ -14,24 +14,12 @@ export default function Navbar() {
         </div>
         
         {/* Search Bar */}
-        <div className="flex items-center bg-white px-4 py-2 rounded-lg w-1/4">
-          <input type="text" placeholder="Digite sua busca..." className="flex-grow outline-none text-gray-600" />
-          <Search className="text-gray-500" />
-        </div>
+        <SearchBar />
         
         {/* Icons */}
         <div className="flex items-center space-x-4">
-          <button className="flex items-center space-x-2 text-gray-900">
-            <Heart />
-            <span>Favoritos</span>
-          </button>
-          <button className="flex items-center space-x-2 bg-white px-4 py-2 rounded-xl shadow-md">
-            <Link className="flex" href="/login" >
-            <User />
-              <span className="flex">Entrar </span>
-            <LogIn className="ml-1" />
-            </Link>
-          </button>
+          <FavoritesButton />
+          <LoginButton />
         </div>
       </div>
       
