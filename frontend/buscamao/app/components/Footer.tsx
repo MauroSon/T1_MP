@@ -3,10 +3,10 @@ import { Facebook, Instagram, Youtube } from "lucide-react"
 import { Twitter } from "lucide-react"
 import Link from "next/link"
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="w-full bg-black text-white py-8 my-16">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-start">
           {/* Destaques Column */}
           <div>
@@ -81,7 +81,7 @@ export default function Footer() {
           {/* Precisa de ajuda Column */}
           <div>
             <h2 className="font-bold mb-4 text-yellow-400">Precisa de ajuda?</h2>
-            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-black">
+            <Button variant="outline" className="text-gray-600 border-white hover:bg-white hover:text-black">
               Fale conosco
             </Button>
           </div>
@@ -90,7 +90,7 @@ export default function Footer() {
         {/* Social Media Links */}
         <div className="mt-8 pt-8 border-t border-gray-800">
           <div className="flex space-x-6 justify-center">
-            <Link href="#" className="hover:text-yellow-400">
+            <Link href="https://www.youtube.com/watch?v=6U3MnqZ_TCQ" className="hover:text-yellow-400">
               <Facebook className="h-6 w-6" />
               <span className="sr-only">Facebook</span>
             </Link>

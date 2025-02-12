@@ -12,13 +12,13 @@ class AuthHelper(BaseHelper):
                 identificador: str, foto_perfil: bytes = None) -> tuple[bool, str]:
         try:
             # Verifica se a conta já está cadastrada com o email fornecido
-            login_exists = self.read(email=email)
-            if login_exists:
+            usuario_existe = self.usuario_existe(email=email)
+            if usuario_existe:
                 msg = "Email já registrado."
                 return False, msg
-            
+
             # Verifica a existência das informações obrigatórias
-            if nome  and email and senha and administrador and feirante and identificador:
+            if nome  and email and senha and identificador:
                 # Comando SQL para inserir informações no banco de dados
                 insert_user_query = """
                                     INSERT INTO 
@@ -206,3 +206,13 @@ class AuthHelper(BaseHelper):
             msg = "Campos incompletos."
             return False, msg
 
+    def usuario_existe(self, email: str = None) -> bool:
+        select_user_query = """
+                            SELECT * FROM Usuario WHERE Email = %s
+                            """
+        if email:
+            self.cursor.execute(select_user_query, (email, ))
+            usuario_existe = self.cursor.fetchone()
+            if usuario_existe:
+                return True
+        return False
