@@ -36,7 +36,7 @@ def test_create_store(client, auth_token):
         assert response.status_code == 201
         assert response.json["success"] == True
         assert response.json["msg"] == "Loja criada com sucesso!"
-    # else:
+    else:
         with pytest.raises(Exception) as e_info:
             print(e_info)
             
