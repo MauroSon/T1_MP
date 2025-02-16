@@ -10,46 +10,52 @@ auth_bp = Blueprint('auth', __name__)
 
 # Cadastro do usuário
 @auth_bp.route('/signup', methods=['POST'])
-@cross_origin()
+@cross_origin(origins="http://localhost:3000", supports_credentials=True)
 def signup():
     # Recebe dados do formulário enviado
-    data = request.json
+    if request.content_type == "application/json":
+        data = request.get_json()
+    else:
+        data = request.form  # Se não for JSON, usa os dados do formulário
 
-    # Verifica se foi enviado uma imagem de perfil e se sim, lê a imagem
+    # Recebe a imagem, se houver
     profile_img = request.files.get('foto_perfil')    
-    profile_img_data = None
-    if profile_img:
-        profile_img_data = profile_img.read() 
+    profile_img_data = profile_img.read() if profile_img else None
 
     try:
-        data = dict(data)
-
-        # Retira os espaços em branco no início e no final dos valores
+        data = dict(data)  # Converte para dicionário
+        # Remove espaços extras
         for key, value in data.items():
             try:
                 data[key] = value.strip()
-            
-            # Tratamento de erros para valores booleanos
             except AttributeError:
                 continue
-        # Insere dados cadastrados no banco de dados
+        if data['administrador'] == 'true':
+            data['administrador'] = True
+        else:
+            data['administrador'] = False
+        
+        if data['feirante'] == 'true':
+            data['feirante'] = True
+        else:
+            data['feirante'] = False
+            
+        # Insere os dados no banco
         success, msg = database.auth.create(
             data['email'],
             data['password'],
             data['nome'],
             data['administrador'],
-            data['feirante'],
+            data['feirante'], 
             data['identificador'],
             profile_img_data  
         )    
 
-    # Tratamento de erro para ausência de um dos campos
     except KeyError:
         success = False
         msg = "Campos incompletos."
 
-    # Resposta da requisição
-    return jsonify({"success":success, "msg":msg}), (201 if success else 400)
+    return jsonify({"success": success, "msg": msg}), (201 if success else 400)
 
 
 # Login do usuário

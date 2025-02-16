@@ -4,7 +4,6 @@ from auth.helper import AuthHelper
 from loja.helper import LojaHelper
 from produto.helper import ProdutoHelper
 import base64
-import googlemaps
 
 # Helper para fazer a interação com o banco de dados 
 class AvaliacoesHelper(BaseHelper):
@@ -209,7 +208,7 @@ class AvaliacoesHelper(BaseHelper):
             
             msg = "Não foi possível realizar a operação."
             return False, msg
-            
+
         except Exception as err:
             print(err)
             return False, str(err)

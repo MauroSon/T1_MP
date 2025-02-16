@@ -63,7 +63,7 @@ def criar_produto():
 @produto_bp.route('/all/', defaults={'parametro': None}, methods=['GET'])
 @produto_bp.route('/all/<parametro>', methods=['GET'])
 @jwt_required()
-@cross_origin()
+@cross_origin(origins="http://localhost:3000")
 def ler_produtos(parametro):
     # Busca identificador e informações do usuário no token JWT
     user_id = get_jwt_identity()
@@ -78,6 +78,7 @@ def ler_produtos(parametro):
     else:
         produtos_data = database.produto.read_all()
 
+    print(produtos_data)
     # Resposta da requisição
     return jsonify(data=produtos_data) if produtos_data else ('',404)
 

@@ -10,7 +10,8 @@ def create_app():
     # Cria uma instância de aplicação Flask
     app = Flask(__name__)
 
-    CORS(app)
+
+    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
     # Configurações iniciais da aplicação
     """

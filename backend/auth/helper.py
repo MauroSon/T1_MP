@@ -8,7 +8,7 @@ import base64
 # Helper para fazer a interação com o banco de dados 
 class AuthHelper(BaseHelper):
     # Método que irá inserir um novo cadastro no banco de dados na tabela "Usuarios"
-    def create(self, email: str, senha: str, nome: str, administrador: str, feirante: bool,
+    def create(self, email: str, senha: str, nome: str, administrador: bool, feirante: bool,
                 identificador: str, foto_perfil: bytes = None) -> tuple[bool, str]:
         try:
             # Verifica se a conta já está cadastrada com o email fornecido

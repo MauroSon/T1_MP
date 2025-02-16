@@ -100,7 +100,6 @@ class ProdutoHelper(BaseHelper):
             self.cursor.execute(select_all_produtos_query)
             produtos_data = list(self.cursor.fetchall())
             produtos_data = [list(produto) for produto in produtos_data]
-
             # Ordena os produtos por nome
             produtos_data.sort(key=lambda x: x[1])
 
