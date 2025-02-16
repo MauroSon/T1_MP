@@ -1,6 +1,5 @@
 # Importa helpers necessários
 from database.base_helper import BaseHelper
-from auth.helper import AuthHelper
 from loja.helper import LojaHelper
 import base64
 import googlemaps
@@ -12,7 +11,7 @@ class ProdutoHelper(BaseHelper):
                 preco: float, descricao_produto: str, foto_produto: bytes = None) -> tuple[bool, str]:
 
         # Verifica se loja esta cadastrada no banco de dados
-        loja_existe = LojaHelper.read(loja_id=loja_id)
+        loja_existe = LojaHelper.read(self, loja_id=loja_id)
         if not loja_existe:
             msg = "Loja não encontrada."
             return False, msg
@@ -45,6 +44,7 @@ class ProdutoHelper(BaseHelper):
                         return True, msg
                     
                     except Exception as err:
+                        self.conn.rollback()
                         self.conn.rollback()
                         return False, str(err)
 

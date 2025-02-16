@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from app.factory import database
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from flask_cors import cross_origin
+import requests
 
 # Utilização de blueprints para encapsular as funcionalidades e viabilizar a modularização
 produto_bp = Blueprint('produto', __name__)
@@ -16,11 +17,19 @@ def criar_produto():
     data = request.json
 
     # Verifica se foi enviado uma imagem do produto e se sim, lê a imagem
-    foto_produto = request.files.get('foto_produto')    
+    foto_produto_url = data['foto_produto']
+    print(foto_produto_url)
     foto_produto_data = None
-    if foto_produto:
-        foto_produto_data = foto_produto.read() 
-
+    if foto_produto_url:
+        try:
+            response = requests.get(foto_produto_url)
+            if response.status_code == 200:
+                foto_produto_data = response.content  # Lê os bytes da imagem
+                print(foto_produto_data)
+            else:
+                print("Erro ao baixar a imagem:", response.status_code)
+        except requests.exceptions.RequestException as e:
+            print("Erro na requisição:", e)
     try:
         data = dict(data)
 
@@ -32,11 +41,11 @@ def criar_produto():
                 continue
 
         # Insere dados cadastrados no banco de dados
-        success, msg = database.loja.create(
+        success, msg = database.produto.create(
+            data['loja_id'],
             data['nome_produto'],
             data['categoria_produto'],
-            data['loja_id'],
-            data['preco'],
+            float(data['preco']),
             data['descricao_produto'],
             foto_produto_data
         )
